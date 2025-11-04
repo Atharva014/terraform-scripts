@@ -1,0 +1,5 @@
+first-tf-script/terraform.tfstate
+first-tf-script/terraform.tfstate.backup
+first-tf-script/.terraform.lock.hcl
+first-tf-script/.terraform/
+first-tf-script/.terraform.tfstate.lock.info
