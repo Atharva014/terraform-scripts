@@ -4,7 +4,7 @@ resource "aws_security_group" "allow_ssh_sg" {
   description = "Allow SSH inbound traffic and all outbound traffic"
   vpc_id = var.vpc_id
   tags = {
-    Name = "Allow SSH"
+    Name = "${var.vpc_tag}-ssh-sg"
   }
 }
 
@@ -26,7 +26,8 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_outbound" {
 # Instance creation
 resource "aws_instance" "web_instance_label" {
   count = var.web_instance_count
-  subnet_id = var.web_instance_subnet[count.index].id
+  subnet_id = var.web_instance_subnet[count.index]
+  associate_public_ip_address = true
   vpc_security_group_ids = [ aws_security_group.allow_ssh_sg.id ]
   ami = var.web_instance_ami
   instance_type = var.web_instance_type
@@ -41,7 +42,7 @@ resource "aws_instance" "web_instance_label" {
 }
 
 resource "aws_instance" "app_instance_label" {
-  subnet_id = var.app_instance_subnet[count.index].id  
+  subnet_id = var.app_instance_subnet[count.index]
   count = var.app_instance_count
   vpc_security_group_ids = [ aws_security_group.allow_ssh_sg.id ]
   ami = var.app_instance_ami
@@ -58,7 +59,7 @@ resource "aws_instance" "app_instance_label" {
 
 resource "aws_instance" "db_instance_label" {
   count = var.db_instance_count
-  subnet_id = var.db_instance_subnet[count.index].id
+  subnet_id = var.db_instance_subnet[count.index]
   vpc_security_group_ids = [ aws_security_group.allow_ssh_sg.id ]
   ami = var.db_instance_ami
   instance_type = var.db_instance_type

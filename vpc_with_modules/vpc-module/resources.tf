@@ -1,6 +1,6 @@
 # VPC Creation
 resource "aws_vpc" "aws_vpc_label" {
-  cidr_block = var.vpc_cider_block
+  cidr_block = var.vpc_cidr_block
   tags = {
     Name = var.vpc_tag
   }
