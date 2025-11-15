@@ -52,6 +52,16 @@ resource "aws_instance" "this" {
   key_name = var.instance_key
   vpc_security_group_ids = [ aws_security_group.instance_sg.id ]
   associate_public_ip_address = true
+
+  user_data = <<-EOF
+              #!/bin/bash
+              yum update -y
+              yum install -y httpd
+              systemctl start httpd
+              systemctl enable httpd
+              echo "<h1>Hello from instance ${count.index}</h1>" > /var/www/html/index.html
+              EOF
+
   root_block_device {
     volume_size = 10
     volume_type = "gp2"

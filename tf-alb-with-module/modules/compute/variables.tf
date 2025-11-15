@@ -17,7 +17,7 @@ variable "instance_type" {
 }
 
 variable "instance_key" {
-  default = string
+  type = string
 }
 
 variable "subnet_ids" {
