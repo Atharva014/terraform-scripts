@@ -18,6 +18,6 @@ output "instance_ami" {
   value = data.aws_ami.amz_linux.name
 }
 
-output "instance_id" {
+output "instance_ami_id" {
   value = data.aws_ami.amz_linux.id
 }
