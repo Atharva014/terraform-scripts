@@ -13,3 +13,11 @@ output "subnet_cidr_block" {
 output "subnet_id" {
   value = aws_subnet.this[*].id
 }
+
+output "instance_ami" {
+  value = data.aws_ami.amz_linux.name
+}
+
+output "instance_id" {
+  value = data.aws_ami.amz_linux.id
+}

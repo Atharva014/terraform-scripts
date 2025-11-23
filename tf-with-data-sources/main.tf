@@ -1,3 +1,4 @@
+# VPC Creation
 resource "aws_vpc" "this" {
   cidr_block = var.vpc_cidr
   
@@ -7,6 +8,7 @@ resource "aws_vpc" "this" {
   }
 }
 
+#Subnet Creation
 resource "aws_subnet" "this" {
   count = 2
   vpc_id = aws_vpc.this.id
@@ -14,5 +16,15 @@ resource "aws_subnet" "this" {
   availability_zone = data.aws_availability_zones.available.names[count.index]
   tags = {
     Name = "remote-state-test-subnet-${count.index}"
+  }
+}
+
+#Instance Creation
+resource "aws_instance" "this" {
+  ami = data.aws_ami.amz_linux.id
+  instance_type = "t2.micro"
+  subnet_id = aws_subnet.this[0].id
+  tags = {
+    Name = "test-instance"
   }
 }
