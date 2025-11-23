@@ -7,5 +7,5 @@ variable "vpc_cidr" {
 }
 
 variable "sub_cidr" {
-  type = string
+  type = list(string)
 }
