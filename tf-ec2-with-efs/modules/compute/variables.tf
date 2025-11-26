@@ -17,3 +17,7 @@ variable "instance_key" {
 variable "subnet" {
   type = string
 }
+
+variable "efs_id" {
+  type = string
+}
