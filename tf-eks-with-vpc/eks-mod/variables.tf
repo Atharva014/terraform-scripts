@@ -31,3 +31,11 @@ variable "max_size" {
   type        = number
   default     = 3
 }
+
+variable "private_subnets" {
+  type = list(string)
+}
+
+variable "public_subnets" {
+  type = list(string)
+}

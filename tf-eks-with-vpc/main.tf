@@ -36,4 +36,6 @@ module "eks" {
   desired_size = var.desired_size
   min_size = var.min_size
   max_size = var.max_size
+  private_subnets = module.vpc.public_subnets
+  public_subnets = module.vpc.public_subnets
 }

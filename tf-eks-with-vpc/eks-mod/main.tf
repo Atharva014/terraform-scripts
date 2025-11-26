@@ -5,7 +5,7 @@ resource "aws_eks_cluster" "main" {
   version  = "1.31"
 
   vpc_config {
-    subnet_ids              = concat(module.vpc.private_subnets, module.vpc.public_subnets)
+    subnet_ids              = concat(var.private_subnets, var.public_subnets)
     endpoint_private_access = true
     endpoint_public_access  = true
   }
@@ -51,7 +51,7 @@ resource "aws_eks_node_group" "main" {
   cluster_name    = aws_eks_cluster.main.name
   node_group_name = var.node_group_name
   node_role_arn   = aws_iam_role.node_group.arn
-  subnet_ids      = module.vpc.private_subnets
+  subnet_ids      = var.private_subnets
 
   scaling_config {
     desired_size = var.desired_size
