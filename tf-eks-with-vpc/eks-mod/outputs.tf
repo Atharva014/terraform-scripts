@@ -48,3 +48,7 @@ output "alb_controller_policy_arn" {
   description = "ARN of the AWS Load Balancer Controller IAM Policy"
   value       = aws_iam_policy.alb_controller.arn
 }
+
+output "alb_controller_ready" {
+  value = helm_release.aws_load_balancer_controller.status
+}

@@ -38,4 +38,12 @@ module "eks" {
   max_size = var.max_size
   private_subnets = module.vpc.public_subnets
   public_subnets = module.vpc.public_subnets
+  vpc_id = module.vpc.default_vpc_id
+  region = var.region
+}
+
+module "k8s-manifests" {
+  source = "./k8s-resources"
+  k8s_manifests_path = ""
+  depends_on = [ module.eks ]
 }

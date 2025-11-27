@@ -15,7 +15,6 @@ resource "aws_eks_addon" "ebs_csi_driver" {
   }
 
   depends_on = [
-    module.eks,
     kubernetes_service_account.ebs_csi_controller
   ]
 }

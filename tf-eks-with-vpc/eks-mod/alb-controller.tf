@@ -24,12 +24,11 @@ resource "helm_release" "aws_load_balancer_controller" {
     },
     {
       name  = "vpcId"
-      value = module.vpc.vpc_id
+      value = var.vpc_id
     }
   ]
 
   depends_on = [
-    module.eks,
     kubernetes_service_account.aws_load_balancer_controller
   ]
 }

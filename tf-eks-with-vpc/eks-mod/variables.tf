@@ -32,6 +32,14 @@ variable "max_size" {
   default     = 3
 }
 
+variable "region" {
+  type = string
+}
+
+variable "vpc_id" {
+  type = string
+}
+
 variable "private_subnets" {
   type = list(string)
 }
