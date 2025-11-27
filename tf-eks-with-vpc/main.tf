@@ -29,7 +29,7 @@ module "vpc" {
 }
 
 module "eks" {
-  source = "./eks-mod"
+  source = "./modules/eks-mod"
   cluster_name = var.cluster_name
   node_group_name = var.node_group_name
   node_instance_type = var.node_instance_type
@@ -38,12 +38,12 @@ module "eks" {
   max_size = var.max_size
   private_subnets = module.vpc.public_subnets
   public_subnets = module.vpc.public_subnets
-  vpc_id = module.vpc.default_vpc_id
+  vpc_id = module.vpc.vpc_id
   region = var.region
 }
 
 module "k8s-manifests" {
-  source = "./k8s-resources"
+  source = "./modules/k8s-resources"
   k8s_manifests_path = ""
   depends_on = [ module.eks ]
 }

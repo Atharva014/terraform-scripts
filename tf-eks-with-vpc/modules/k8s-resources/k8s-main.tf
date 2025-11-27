@@ -11,10 +11,6 @@ resource "kubernetes_manifest" "frontend_service" {
 # Database Setup
 resource "kubernetes_manifest" "postgres_storage_class" {
   manifest = yamldecode(file("${path.module}/${var.k8s_manifests_path}/postgres-storage-class.yaml"))
-
-  depends_on = [
-    helm_release.aws_load_balancer_controller
-  ]
 }
 
 resource "kubernetes_manifest" "postgres_pvc" {
@@ -67,5 +63,17 @@ resource "kubernetes_manifest" "frontend_deployment" {
   depends_on = [
     kubernetes_manifest.configmap,
     kubernetes_manifest.frontend_service
+  ]
+}
+
+# Ingress
+resource "kubernetes_manifest" "ingress" {
+  manifest = yamldecode(file("${path.module}/${var.k8s_manifests_path}/ingress.yaml"))
+
+  depends_on = [
+    kubernetes_manifest.backend_deployment,
+    kubernetes_manifest.frontend_deployment,
+    kubernetes_manifest.backend_service,
+    kubernetes_manifest.frontend_service,
   ]
 }
