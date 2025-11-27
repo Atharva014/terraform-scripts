@@ -27,3 +27,9 @@ output "configure_kubectl" {
   description = "Configure kubectl command"
   value       = "aws eks update-kubeconfig --region ${var.region} --name ${var.cluster_name}"
 }
+
+output "cluster_certificate_authority" {
+  description = "Base64 encoded certificate data for the cluster"
+  value       = module.eks.cluster_certificate_authority
+  sensitive   = true
+}

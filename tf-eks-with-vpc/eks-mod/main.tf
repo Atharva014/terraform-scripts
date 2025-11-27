@@ -121,3 +121,48 @@ resource "aws_iam_openid_connect_provider" "cluster" {
     Name = "${var.cluster_name}-oidc-provider"
   }
 }
+
+# IAM Role for EBS CSI Controller
+resource "aws_iam_role" "ebs_csi_controller" {
+  name               = "${var.cluster_name}-ebs-csi-controller"
+  assume_role_policy = data.aws_iam_policy_document.ebs_csi_controller_assume_role.json
+
+  tags = {
+    Name = "${var.cluster_name}-ebs-csi-controller"
+  }
+}
+
+# Attach the AWS managed policy for EBS CSI Driver
+resource "aws_iam_role_policy_attachment" "ebs_csi_controller" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  role       = aws_iam_role.ebs_csi_controller.name
+}
+
+# Create the IAM Policy for AWS Load Balancer Controller
+resource "aws_iam_policy" "alb_controller" {
+  name        = "AWSLoadBalancerControllerIAMPolicy"
+  path        = "/"
+  description = "IAM policy for AWS Load Balancer Controller"
+  policy      = data.http.alb_controller_iam_policy.response_body
+
+  tags = {
+    Name        = "AWSLoadBalancerControllerIAMPolicy"
+    Environment = "production"
+    ManagedBy   = "terraform"
+  }
+}
+
+resource "aws_iam_role" "alb_controller" {
+  name               = "${var.cluster_name}-aws-load-balancer-controller"
+  assume_role_policy = data.aws_iam_policy_document.alb_controller_assume_role.json
+
+  tags = {
+    Name = "${var.cluster_name}-aws-load-balancer-controller"
+  }
+}
+
+# Attach the IAM Policy to the IAM Role
+resource "aws_iam_role_policy_attachment" "alb_controller" {
+  policy_arn = aws_iam_policy.alb_controller.arn
+  role       = aws_iam_role.alb_controller.name
+}
