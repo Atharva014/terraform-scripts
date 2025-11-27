@@ -13,8 +13,4 @@ resource "aws_eks_addon" "ebs_csi_driver" {
     Name        = "aws-ebs-csi-driver"
     Environment = "production"
   }
-
-  depends_on = [
-    kubernetes_service_account.ebs_csi_controller
-  ]
 }

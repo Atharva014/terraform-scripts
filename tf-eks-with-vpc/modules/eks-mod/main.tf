@@ -145,6 +145,10 @@ resource "aws_iam_policy" "alb_controller" {
   description = "IAM policy for AWS Load Balancer Controller"
   policy      = data.http.alb_controller_iam_policy.response_body
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   tags = {
     Name        = "AWSLoadBalancerControllerIAMPolicy"
     Environment = "production"

@@ -28,6 +28,10 @@ module "vpc" {
   }
 }
 
+module "ecr" {
+  source = "./modules/ecr-mod"
+}
+
 module "eks" {
   source = "./modules/eks-mod"
   cluster_name = var.cluster_name
@@ -36,14 +40,18 @@ module "eks" {
   desired_size = var.desired_size
   min_size = var.min_size
   max_size = var.max_size
-  private_subnets = module.vpc.public_subnets
+  private_subnets = module.vpc.private_subnets
   public_subnets = module.vpc.public_subnets
   vpc_id = module.vpc.vpc_id
   region = var.region
+  depends_on = [ module.ecr ]
 }
 
 module "k8s-manifests" {
   source = "./modules/k8s-resources"
-  k8s_manifests_path = ""
+  k8s_manifests_path = "k8s"
   depends_on = [ module.eks ]
+  providers = {
+    kubernetes = kubernetes
+  }
 }
