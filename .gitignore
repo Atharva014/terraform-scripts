@@ -2,5 +2,6 @@
 **/terraform.tfstate.backup
 **/.terraform.lock.hcl
 **/.terraform/
+**/terraform.tfstate.d/
 **/.terraform.tfstate.lock.info
 **/k8s

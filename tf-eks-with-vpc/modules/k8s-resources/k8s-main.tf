@@ -71,8 +71,6 @@ resource "kubernetes_manifest" "ingress" {
   manifest = yamldecode(file("${path.root}/${var.k8s_manifests_path}/ingress.yaml"))
 
   depends_on = [
-    kubernetes_manifest.backend_deployment,
-    kubernetes_manifest.frontend_deployment,
     kubernetes_manifest.backend_service,
     kubernetes_manifest.frontend_service,
   ]
