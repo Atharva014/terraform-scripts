@@ -17,6 +17,8 @@ resource "aws_subnet" "this" {
   cidr_block = var.subnet_cidr[count.index]
   availability_zone = data.aws_availability_zones.available.names[count.index]
   tags = merge(var.common_tags, { Name = "ecs-subnet-${count.index}" })
+  enable_resource_name_dns_a_record_on_launch = true
+  map_public_ip_on_launch = true
 }
 
 # Route table creation

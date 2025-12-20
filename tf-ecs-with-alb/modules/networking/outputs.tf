@@ -13,3 +13,7 @@ output "subnet_cidr" {
 output "subnet_azs" {
   value = aws_subnet.this[*].availability_zone
 }
+
+output "subnet_ids" {
+  value = aws_subnet.this[*].id
+}

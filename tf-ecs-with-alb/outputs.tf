@@ -14,3 +14,6 @@ output "subnet_azs" {
   value = module.vpc.subnet_azs
 }
 
+output "subnet_ids" {
+  value = module.vpc.subnet_ids
+}
