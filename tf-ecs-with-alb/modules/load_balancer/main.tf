@@ -15,6 +15,7 @@ resource "aws_security_group" "this" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = merge(var.common_tags, { Name = "ecs-alb-sg" })
 }
 
 # ALB creation
@@ -23,14 +24,17 @@ resource "aws_lb" "this" {
   load_balancer_type = "application"
   subnets = var.subnet_ids
   security_groups = [ aws_security_group.this.id ]
+  tags = merge(var.common_tags, { Name = "ecs-alb" })
 }
 
 # TG creation
 resource "aws_lb_target_group" "this" {
   name = "alb-tg"
   port = 3000
-  protocol = "TCP"
+  protocol = "HTTP"
   vpc_id = var.vpc_id
+  target_type = "ip"
+  tags = merge(var.common_tags, { Name = "ecs-alb-tg" })
 }
 
 # ALB listener
@@ -42,4 +46,5 @@ resource "aws_lb_listener" "this" {
     type = "forward"
     target_group_arn = aws_lb_target_group.this.arn
   }
+  tags = merge(var.common_tags, { Name = "ecs-alb-listener" })
 }

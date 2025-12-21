@@ -1,6 +1,7 @@
 # ECS cluster
 resource "aws_ecs_cluster" "this" {
   name = "hello-ecr-cluster"
+  tags = merge(var.common_tags, { Name = "hello-ecs-cluster" })
 }
 
 # Task Execution Role
@@ -17,6 +18,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
       }
     }]
   })
+  tags = merge(var.common_tags, { Name = "hello-ecs-cluster-ecexution-role" })
 }
 
 # Attach AWS managed policy for ECS task execution
@@ -52,7 +54,9 @@ resource "aws_ecs_task_definition" "this" {
                 "awslogs-stream-prefix" = "ecs"
             }
         }
-    }])
+    }
+  ])
+  tags = merge(var.common_tags, { Name = "hello-ecs-cluster-task-definition" })
 }
 
 # CloudWatch Log Group for container logs
@@ -73,8 +77,15 @@ resource "aws_ecs_service" "this" {
     security_groups = [ aws_security_group.ecs_tasks.id ]
     assign_public_ip = true
   }
+  load_balancer {
+    target_group_arn = var.target_group_arn
+    container_port = 3000
+    container_name = "hello-ecr-container"
+  }
+  tags = merge(var.common_tags, { Name = "hello-ecs-cluster-service" })
 }
 
+# ECS security group
 resource "aws_security_group" "ecs_tasks" {
   name = "hello-ecr-sg"
   description = "Allow inbound traffic on port 3000"
@@ -91,4 +102,5 @@ resource "aws_security_group" "ecs_tasks" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = merge(var.common_tags, { Name = "hello-ecs-cluster-sg" })
 }
