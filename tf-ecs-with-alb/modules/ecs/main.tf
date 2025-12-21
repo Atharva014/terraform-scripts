@@ -70,7 +70,7 @@ resource "aws_ecs_service" "this" {
   launch_type = "FARGATE"
   network_configuration {
     subnets = var.subnet_ids
-    security_groups = [ aws_security_group.ecs_tasks ]
+    security_groups = [ aws_security_group.ecs_tasks.id ]
     assign_public_ip = true
   }
 }
@@ -83,7 +83,7 @@ resource "aws_security_group" "ecs_tasks" {
     from_port = 3000
     to_port = 3000
     protocol = "tcp"
-    cidr_blocks = "0.0.0.0/0"
+    cidr_blocks =  [ "0.0.0.0/0" ]
   }
   egress {
     from_port   = 0

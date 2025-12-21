@@ -11,3 +11,9 @@ module "ecs" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.subnet_ids
 }
+
+module "ALB" {
+  source = "./modules/load_balancer"
+  subnet_ids = module.vpc.subnet_ids
+  vpc_id = module.vpc.vpc_id
+}
