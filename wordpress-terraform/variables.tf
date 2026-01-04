@@ -23,3 +23,8 @@ variable "pub_subnet_cidr" {
 variable "priv_subnet_cidr" {
   type = list(string)
 }
+
+variable "db_password" {
+  type = string
+  sensitive = true
+}
