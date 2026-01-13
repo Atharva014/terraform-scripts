@@ -76,3 +76,28 @@ resource "aws_route_table_association" "priv_rt_association" {
   route_table_id = aws_route_table.priv_rt[count.index].id
   subnet_id = aws_subnet.priv_sub[count.index].id
 }
+
+# Web server Security group
+resource "aws_security_group" "web_srv_sg" {
+  name = "web-sg"
+  vpc_id = aws_vpc.this.id
+
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+}

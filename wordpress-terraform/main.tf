@@ -14,5 +14,16 @@ module "rds" {
   db_name = "atharva-db"
   db_username = "root"
   db_password = var.db_password
-  web_sg_id = ""
+  web_sg_id = module.vpc.web_srv_sg_id
+}
+
+module "ec2" {
+  source = "./modules/compute"
+  common_tags = var.common_tags
+  instance_count = 2
+  pub_sub_ids = module.vpc.pub_sub_ids
+  instance_ami = "ami-03695d52f0d883f65"
+  instance_type = "t2.micro"
+  instance_key = "linux-key"
+  web_srv_sg_id = module.vpc.web_srv_sg_id
 }

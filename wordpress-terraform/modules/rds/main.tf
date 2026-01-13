@@ -1,7 +1,7 @@
 # DB subnet group
 resource "aws_db_subnet_group" "this" {
   subnet_ids = var.priv_sub_ids
-  tags = merge(var.common_tags, { Name = "wprdpress-db-sub" } )
+  tags = merge(var.common_tags, { Name = "wordpress-db-sub" } )
 }
 
 # Security group for rds
