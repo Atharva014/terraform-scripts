@@ -11,8 +11,8 @@ module "rds" {
   common_tags = var.common_tags
   vpc_id = module.vpc.vpc_id
   priv_sub_ids = module.vpc.priv_sub_ids
-  db_name = "atharva-db"
-  db_username = "root"
+  db_name = var.db_name
+  db_username = var.db_username
   db_password = var.db_password
   web_sg_id = module.vpc.web_srv_sg_id
 }
@@ -26,4 +26,8 @@ module "ec2" {
   instance_type = "t2.micro"
   instance_key = "linux-key"
   web_srv_sg_id = module.vpc.web_srv_sg_id
+  db_endpoint = module.rds.db_endpoint
+  db_name = var.db_name
+  db_username = var.db_username
+  db_password = var.db_password
 }
