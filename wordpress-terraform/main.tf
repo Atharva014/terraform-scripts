@@ -31,3 +31,13 @@ module "ec2" {
   db_username = var.db_username
   db_password = var.db_password
 }
+
+module "alb" {
+  source = "./modules/load-balancer"
+  alb_sg_id = module.vpc.alb_sg_id
+  common_tags = var.common_tags
+  instance_count = 2
+  subnet_ids = module.vpc.pub_sub_ids
+  instance_ids = module.ec2.instances_ids
+  vpc_id = module.vpc.vpc_id
+}
