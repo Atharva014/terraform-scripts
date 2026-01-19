@@ -22,8 +22,8 @@ module "ec2" {
   common_tags = var.common_tags
   instance_count = 2
   pub_sub_ids = module.vpc.pub_sub_ids
-  instance_ami = "ami-03695d52f0d883f65"
-  instance_type = "t2.micro"
+  instance_ami = "ami-0ced6a024bb18ff2e"
+  instance_type = "t3.micro"
   instance_key = "linux-key"
   web_srv_sg_id = module.vpc.web_srv_sg_id
   db_endpoint = module.rds.db_endpoint
