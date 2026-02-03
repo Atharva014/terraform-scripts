@@ -11,4 +11,5 @@ module "asg" {
   common_tags = var.common_tags
   sg_ids = [ module.vpc.http_sg_id, module.vpc.ssh_sg_id ]
   vpc_id = module.vpc.vpc_id
+  subnet_ids = module.vpc.pub_sub_ids
 }

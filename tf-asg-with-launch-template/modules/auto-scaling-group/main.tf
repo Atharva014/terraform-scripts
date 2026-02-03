@@ -5,10 +5,8 @@ resource "aws_launch_template" "this" {
   key_name = "linux-key"
   vpc_security_group_ids = var.sg_ids
 
-  block_device_mappings {
-    ebs {
-      volume_size = 8
-    }
+  network_interfaces {
+    associate_public_ip_address = true
   }
   
   user_data = base64encode(<<-EOF
@@ -20,6 +18,18 @@ resource "aws_launch_template" "this" {
     echo "<h1>Hello from ASG Instance - $(hostname -f)</h1>" > /var/www/html/index.html
   EOF
   )
-  
+
   tags = merge(var.common_tags, { "Name" = "asg-launch-template" } )
 }
+
+resource "aws_autoscaling_group" "this" {
+  desired_capacity = 1
+  min_size = 1
+  max_size = 4
+  vpc_zone_identifier = var.subnet_ids
+  launch_template {
+    id = aws_launch_template.this.id
+    version = "$Latest"
+  }
+}
+
