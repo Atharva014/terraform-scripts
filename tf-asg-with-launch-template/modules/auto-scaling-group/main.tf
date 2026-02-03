@@ -3,10 +3,10 @@ resource "aws_launch_template" "this" {
   image_id = "ami-0ff5003538b60d5ec"
   instance_type = "t3.micro"
   key_name = "linux-key"
-  vpc_security_group_ids = var.sg_ids
 
   network_interfaces {
     associate_public_ip_address = true
+    security_groups = var.sg_ids
   }
   
   user_data = base64encode(<<-EOF
