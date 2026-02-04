@@ -31,6 +31,20 @@ resource "aws_autoscaling_group" "this" {
     id = aws_launch_template.this.id
     version = "$Latest"
   } 
+  tag {
+    key                 = "Name"
+    value               = "asg-instance"
+    propagate_at_launch = true
+  }
+
+  dynamic "tag" {
+    for_each = var.common_tags
+    content {
+      key                 = tag.key
+      value               = tag.value
+      propagate_at_launch = true
+    }
+  }
 }
 
 resource "aws_autoscaling_policy" "this" {
