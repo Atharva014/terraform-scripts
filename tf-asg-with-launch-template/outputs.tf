@@ -9,3 +9,7 @@ output "asg_name" {
 output "launch_template_id" {
   value = module.asg.launch_template_id
 }
+
+output "alb_dns_name" {
+  value       = module.alb.alb_dns_name
+}

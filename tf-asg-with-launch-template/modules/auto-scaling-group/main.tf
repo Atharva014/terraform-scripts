@@ -26,11 +26,15 @@ resource "aws_autoscaling_group" "this" {
   desired_capacity = 1
   min_size = 1
   max_size = 4
+  health_check_type = "ELB"
   vpc_zone_identifier = var.subnet_ids
+  target_group_arns = var.target_group_arns
+  
   launch_template {
     id = aws_launch_template.this.id
     version = "$Latest"
-  } 
+  }
+  
   tag {
     key                 = "Name"
     value               = "asg-instance"
