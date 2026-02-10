@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My CloudFront Website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        .emoji {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        .info-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .tech-stack {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .tech-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .tech-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emoji">🚀</div>
+        <h1>Hello from CloudFront!</h1>
+        
+        <div class="info-box">
+            <p style="font-size: 1.2em; margin-bottom: 10px;">
+                This website is globally distributed and blazing fast! ⚡
+            </p>
+            <p>
+                Hosted on AWS S3 and delivered via CloudFront CDN
+            </p>
+        </div>
+        
+        <div class="tech-stack">
+            <div class="tech-item">
+                <strong>☁️ AWS S3</strong><br>
+                <small>Storage</small>
+            </div>
+            <div class="tech-item">
+                <strong>🌍 CloudFront</strong><br>
+                <small>Global CDN</small>
+            </div>
+            <div class="tech-item">
+                <strong>🔧 Terraform</strong><br>
+                <small>IaC</small>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Deployed with ❤️ using Terraform</p>
+            <p style="margin-top: 10px;">
+                <small>Response time: <span id="loadTime"></span>ms</small>
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Show page load time
+        window.addEventListener('load', function() {
+            const loadTime = performance.timing.domContentLoadedEventEnd - 
+                           performance.timing.navigationStart;
+            document.getElementById('loadTime').textContent = loadTime;
+        });
+    </script>
+</body>
+</html>
