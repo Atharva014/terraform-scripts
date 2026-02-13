@@ -29,6 +29,7 @@ resource "aws_s3_object" "error_file" {
   etag   = filemd5("./website-files/error.html")
 }
 
+# Origin Access Control
 resource "aws_cloudfront_origin_access_control" "s3-wensite-oac" {
   name = "s3-wensite-oac"
   origin_access_control_origin_type = "s3"
@@ -36,9 +37,35 @@ resource "aws_cloudfront_origin_access_control" "s3-wensite-oac" {
   signing_protocol = "sigv4"
 }
 
+# S3 Bucket Policy for OAC
+resource "aws_s3_bucket_policy" "this" {
+  bucket = aws_s3_bucket.this.id
+  policy = jsonencode({
+    Version = "2008-10-17"
+    Id      = "PolicyForCloudFrontPrivateContent"
+    Statement = [
+      {
+        Sid    = "AllowCloudFrontServicePrincipal"
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action   = "s3:GetObject"
+        Resource = "${aws_s3_bucket.this.arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.this.arn
+          }
+        }
+      }
+    ]
+  })
+}
+
+# CloudFront Distribution with OAC
 resource "aws_cloudfront_distribution" "this" {
   origin {
-    domain_name = aws_s3_bucket.this.bucket_domain_name
+    domain_name = aws_s3_bucket.this.bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.s3-wensite-oac.id
     origin_id = aws_s3_bucket.this.id
   }
