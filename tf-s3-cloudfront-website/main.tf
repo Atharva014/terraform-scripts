@@ -62,6 +62,25 @@ resource "aws_s3_bucket_policy" "this" {
   })
 }
 
+# Cloudfront caching policy
+resource "aws_cloudfront_cache_policy" "this" {
+  name = "s3-website-policy"
+  default_ttl = 86400
+  min_ttl = 1
+  max_ttl = 31536000
+  parameters_in_cache_key_and_forwarded_to_origin {
+    cookies_config {
+      cookie_behavior = "none"
+    }
+    headers_config {
+      header_behavior = "none"
+    }
+    query_strings_config {
+      query_string_behavior = "none"
+    }
+  }
+}
+
 # CloudFront Distribution with OAC
 resource "aws_cloudfront_distribution" "this" {
   origin {
@@ -79,7 +98,7 @@ resource "aws_cloudfront_distribution" "this" {
     cached_methods = ["GET", "HEAD"]
     target_origin_id = aws_s3_bucket.this.id
     viewer_protocol_policy = "allow-all"
-    cache_policy_id = "658327ea-f89d-4fab-a63d-7e88639e58f6"
+    cache_policy_id = aws_cloudfront_cache_policy.this.id
   }
   custom_error_response {
     error_code = 404
